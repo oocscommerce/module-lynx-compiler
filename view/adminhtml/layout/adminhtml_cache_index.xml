@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © OOCS Commerce (https://www.oocscommerce.com). All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Next to core's Additional Cache Management buttons: what lynx:compile builds is not a cache type. -->
+        <referenceContainer name="content">
+            <block class="OOCS\LynxCompiler\Block\Adminhtml\Cache\Compiled"
+                   name="lynx.cache.compiled"
+                   template="OOCS_LynxCompiler::cache/compiled.phtml"
+                   after="cache.additional"/>
+        </referenceContainer>
+    </body>
+</page>

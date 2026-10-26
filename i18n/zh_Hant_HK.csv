@@ -1,0 +1,4 @@
+"Could not remove the Lynx compiled files.","無法移除 Lynx 編譯檔案。"
+"Everything lynx:compile built in generated/lynx_compile, served instead of rebuilt per request","lynx:compile 在 generated/lynx_compile 建立的所有內容，直接提供而毋須每次請求重新建立"
+"Flush Lynx Compile","清除 Lynx 編譯"
+"The Lynx compiled files have been removed. Rebuild them with bin/magento lynx:compile.","Lynx 編譯檔案已移除。請以 bin/magento lynx:compile 重新建立。"

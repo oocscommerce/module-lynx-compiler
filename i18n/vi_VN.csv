@@ -1,0 +1,4 @@
+"Could not remove the Lynx compiled files.","Không thể xoá các file đã biên dịch của Lynx."
+"Everything lynx:compile built in generated/lynx_compile, served instead of rebuilt per request","Mọi thứ lynx:compile đã dựng trong generated/lynx_compile, được dùng thay vì dựng lại ở mỗi request"
+"Flush Lynx Compile","Xoá Lynx Compile"
+"The Lynx compiled files have been removed. Rebuild them with bin/magento lynx:compile.","Đã xoá các file đã biên dịch của Lynx. Dựng lại bằng bin/magento lynx:compile."

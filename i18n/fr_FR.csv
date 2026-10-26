@@ -1,0 +1,4 @@
+"Could not remove the Lynx compiled files.","Impossible de supprimer les fichiers compilés Lynx."
+"Everything lynx:compile built in generated/lynx_compile, served instead of rebuilt per request","Tout ce que lynx:compile a généré dans generated/lynx_compile, servi au lieu d'être reconstruit à chaque requête"
+"Flush Lynx Compile","Vider la compilation Lynx"
+"The Lynx compiled files have been removed. Rebuild them with bin/magento lynx:compile.","Les fichiers compilés Lynx ont été supprimés. Régénérez-les avec bin/magento lynx:compile."

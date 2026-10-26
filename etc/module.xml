@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © OOCS Commerce (https://www.oocscommerce.com). All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="OOCS_LynxCompiler">
+        <sequence>
+            <!-- Every module whose reader this one replaces, so the override is declared last and wins. -->
+            <module name="Magento_Widget"/>
+            <module name="Magento_Customer"/>
+            <module name="Magento_Elasticsearch"/>
+            <module name="Magento_QueryXml"/>
+            <module name="Magento_DataExporter"/>
+            <!--
+                Model\Translate asks LynxTheme\Helper\Theme whether Lynx is active before serving a compiled dictionary.
+            -->
+            <module name="OOCS_LynxTheme"/>
+            <module name="OOCS_LynxOptimize"/>
+        </sequence>
+    </module>
+</config>

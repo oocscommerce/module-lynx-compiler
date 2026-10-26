@@ -1,0 +1,556 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © OOCS Commerce (https://www.oocscommerce.com). All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--
+        Preference, not plugin: getData() is too hot to wrap. Global: Phrase::setRenderer() captures the instance at
+        bootstrap, an area preference left two instances and __() read the empty one. Overrides check the design theme.
+    -->
+    <preference for="Magento\Framework\TranslateInterface"
+                type="OOCS\LynxCompiler\Model\Translate"/>
+
+    <!--
+        Magento_Translation names the concrete class here; without this the renderer held a second, empty
+        Translate.
+    -->
+    <type name="Magento\Framework\Phrase\Renderer\Translate">
+        <arguments>
+            <argument name="translator" xsi:type="object">OOCS\LynxCompiler\Model\Translate</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="lynxCompile" xsi:type="object">OOCS\LynxCompiler\Console\Command\Compile</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- What `lynx:compile` can build; adding a compiler is a CompilerInterface class and one line here. -->
+    <type name="OOCS\LynxCompiler\Console\Command\Compile">
+        <arguments>
+            <argument name="compilers" xsi:type="array">
+                <item name="translate" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Translate</item>
+                <item name="events" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Events</item>
+                <item name="sections" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Sections</item>
+                <item name="components" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Components</item>
+                <item name="routes" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Routes</item>
+                <item name="extension_attributes" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\ExtensionAttributes</item>
+                <item name="csp_whitelist" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\CspWhitelist</item>
+                <item name="product_types" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\ProductTypes</item>
+                <item name="resources" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Resources</item>
+                <item name="cron_groups" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\CronGroups</item>
+                <item name="address_formats" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\AddressFormats</item>
+                <item name="sales" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Sales</item>
+                <item name="catalog_attributes" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\CatalogAttributes</item>
+                <item name="fieldset" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Fieldset</item>
+                <item name="payment" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Payment</item>
+                <item name="cache" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Cache</item>
+                <item name="search_request" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\SearchRequest</item>
+                <item name="esconfig" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\EsConfig</item>
+                <item name="webapi" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Webapi</item>
+                <item name="product_options" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\ProductOptions</item>
+                <item name="communication" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Communication</item>
+                <item name="queue" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Queue</item>
+                <item name="queue_publisher" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\QueuePublisher</item>
+                <item name="webapi_async" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\WebapiAsync</item>
+                <item name="menu" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Menu</item>
+                <item name="acl" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Acl</item>
+                <item name="view_config" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\ViewConfig</item>
+                <item name="indexer" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Indexer</item>
+                <item name="mview" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Mview</item>
+                <item name="widget" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Widget</item>
+                <item name="email_templates" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\EmailTemplates</item>
+                <item name="zip_codes" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\ZipCodes</item>
+                <item name="eav_attributes" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\EavAttributes</item>
+                <item name="query" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Query</item>
+                <item name="et_schema" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\EtSchema</item>
+                <item name="config" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Config</item>
+                <item name="version" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Version</item>
+                <item name="layout" xsi:type="object">OOCS\LynxCompiler\Console\Compiler\Layout</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--
+        view.xml has no cache: every product image render walks all modules. Preference: ViewFactory builds this
+        class by name.
+    -->
+    <preference for="Magento\Framework\Config\View"
+                type="OOCS\LynxCompiler\Model\Config\Reader\View"/>
+
+    <!--
+        getVersion() reads all of composer.lock (87 ms). On the class: Console\Cli names it, and the interface
+        resolves through it.
+    -->
+    <preference for="Magento\Framework\App\ProductMetadata"
+                type="OOCS\LynxCompiler\Model\ProductMetadata"/>
+
+    <!-- setup:upgrade and module:enable/disable empty generated/code through this; the snapshot goes with it. -->
+    <type name="Magento\Framework\App\State\CleanupFiles">
+        <plugin name="lynx_clean_compiled_with_generated"
+                type="OOCS\LynxCompiler\Plugin\App\CleanCompiledWithGenerated"/>
+    </type>
+
+    <!-- Hands the theme key from ViewFactory's arguments to the reader, which names a file per theme. -->
+    <type name="Magento\Framework\Config\ViewFactory">
+        <plugin name="lynx_compiled_view_config_key"
+                type="OOCS\LynxCompiler\Plugin\View\CompiledViewKey"/>
+    </type>
+
+    <!-- GraphQL and REST load no design theme but read view.xml through Product\Image: a themeless file of its own. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\ViewConfig">
+        <arguments>
+            <argument name="themelessAreas" xsi:type="array">
+                <item name="graphql" xsi:type="string">graphql</item>
+                <item name="webapi_rest" xsi:type="string">webapi_rest</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--
+        Event\Config\Data reads ['global'] plus the current scope. Primary merges nothing; its file stops a glob
+        of app/etc.
+    -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Events">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="primary" xsi:type="string">primary</item>
+                <item name="global" xsi:type="string">global</item>
+                <item name="frontend" xsi:type="string">frontend</item>
+                <item name="adminhtml" xsi:type="string">adminhtml</item>
+                <item name="graphql" xsi:type="string">graphql</item>
+                <item name="webapi_rest" xsi:type="string">webapi_rest</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Component definitions: the compiled file instead of parsing every etc/components/*.graphqls. -->
+    <preference for="OOCS\LynxComponent\Helper\Schema\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Components"/>
+
+    <!-- Only the type changes; the virtualType's arguments merge by name and stay. -->
+    <virtualType name="SectionInvalidationConfigReader"
+                 type="OOCS\LynxCompiler\Model\Config\Reader\Sections"/>
+
+    <!-- Injected by virtualType name: Config\Reader\Filesystem needs $fileName and two unpreferred interfaces. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Sections">
+        <arguments>
+            <argument name="reader" xsi:type="object">SectionInvalidationConfigReader</argument>
+            <argument name="scopes" xsi:type="array">
+                <item name="frontend" xsi:type="string">frontend</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Route\Config reads one scope per request; the two global routes.xml belong to a scope neither asks for. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Routes">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="frontend" xsi:type="string">frontend</item>
+                <item name="adminhtml" xsi:type="string">adminhtml</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Global alone: ExtensionAttribute\Config reads in its constructor and passes no scope; no area copies exist. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\ExtensionAttributes">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--
+        Global plus the area scope (Config\Data\Scoped). Theme files go into global only, so area reads are
+        module-only.
+    -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\CspWhitelist">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+                <item name="frontend" xsi:type="string">frontend</item>
+                <item name="adminhtml" xsi:type="string">adminhtml</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Global alone: ProductTypes\Config reads in its constructor and passes no scope; no area copies exist. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\ProductTypes">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--
+        Global, not per area: Config\Reader\Proxy binds its subject on first resolve, before the area DI is loaded.
+        Files are named per scope; a scope with no file reads as core does. The compilers call readMerged().
+    -->
+    <preference for="Magento\Framework\Event\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Events"/>
+
+    <preference for="Magento\Framework\App\ResourceConnection\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Resources"/>
+
+    <preference for="Magento\Cron\Model\Groups\Config\Reader\Xml"
+                type="OOCS\LynxCompiler\Model\Config\Reader\CronGroups"/>
+
+    <preference for="Magento\Framework\App\Route\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Routes"/>
+
+    <preference for="Magento\Framework\Api\ExtensionAttribute\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\ExtensionAttributes"/>
+
+    <preference for="Magento\Csp\Model\Collector\CspWhitelistXml\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\CspWhitelist"/>
+
+    <preference for="Magento\Catalog\Model\ProductTypes\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\ProductTypes"/>
+
+    <preference for="Magento\Customer\Model\Address\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\AddressFormats"/>
+
+    <preference for="Magento\Sales\Model\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Sales"/>
+
+    <preference for="Magento\Catalog\Model\Attribute\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\CatalogAttributes"/>
+
+    <preference for="Magento\Framework\DataObject\Copy\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Fieldset"/>
+
+    <preference for="Magento\Payment\Model\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Payment"/>
+
+    <!--
+        No reader for system.xml: 709 KB of XML became a 21 MB PHP file, over opcache.max_file_size, for a page
+        Structure\Data caches anyway.
+    -->
+
+    <preference for="Magento\Framework\Cache\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Cache"/>
+
+    <preference for="Magento\Framework\Search\Request\Config\FilesystemReader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\SearchRequest"/>
+
+    <preference for="Magento\Webapi\Model\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Webapi"/>
+
+    <preference for="Magento\Catalog\Model\ProductOptions\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\ProductOptions"/>
+
+    <preference for="Magento\Framework\MessageQueue\Config\Reader\Xml"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Queue"/>
+
+    <preference for="Magento\Framework\MessageQueue\Publisher\Config\Xml\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\QueuePublisher"/>
+
+    <preference for="Magento\WebapiAsync\Model\ServiceConfig\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\WebapiAsync"/>
+
+    <preference for="Magento\Backend\Model\Menu\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Menu"/>
+
+    <preference for="Magento\Framework\Acl\AclResource\Config\Reader\Filesystem"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Acl"/>
+
+    <preference for="Magento\Framework\Indexer\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Indexer"/>
+
+    <preference for="Magento\Framework\Mview\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Mview"/>
+
+    <preference for="Magento\Widget\Model\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Widget"/>
+
+    <preference for="Magento\Email\Model\Template\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\EmailTemplates"/>
+
+    <preference for="Magento\Directory\Model\Country\Postcode\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\ZipCodes"/>
+
+    <preference for="Magento\Eav\Model\Entity\Attribute\Config\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\EavAttributes"/>
+
+    <!--
+        Initial\Reader::read() takes no scope. Magento_Cron's afterConvert plugin runs inside the merge, so a
+        cron_groups.xml change needs `lynx:compile config` too.
+    -->
+    <preference for="Magento\Framework\App\Config\Initial\Reader"
+                type="OOCS\LynxCompiler\Model\Config\Reader\Config"/>
+
+    <!--
+        No reader for definition.map.xml: Ui\Config\Reader\FileResolver lists files by design fallback, which
+        the CLI lacks.
+    -->
+
+
+    <!-- Global, no area copies of cron_groups.xml and the config passes no scope. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\CronGroups">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Global: Address\Config passes no scope and the one file sits in module-customer/etc. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\AddressFormats">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Global: Sales\Model\Config\Data passes no scope and the nine sales.xml sit in module etc directories. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Sales">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Plain Config\Data with no scope; the scopes inside fieldset.xml are array keys, not config scopes. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\CatalogAttributes">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\Fieldset">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\Payment">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--
+        Primary is current when the cache type list is first asked for; its empty file stops a walk of every
+        module.
+    -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Cache">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="primary" xsi:type="string">primary</item>
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\SearchRequest">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\Webapi">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\ProductOptions">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Only the type changes; a preference cannot target a virtualType. -->
+    <virtualType name="Magento\Framework\Communication\Config\Reader\XmlReader"
+                 type="OOCS\LynxCompiler\Model\Config\Reader\Communication"/>
+
+    <!-- Injected by virtualType name: Config\Reader\Filesystem needs $fileName and two unpreferred interfaces. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Communication">
+        <arguments>
+            <argument name="reader" xsi:type="object">Magento\Framework\Communication\Config\Reader\XmlReader</argument>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\Queue">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\QueuePublisher">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\WebapiAsync">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- adminhtml: Menu\Config passes the current area code and only the admin asks. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Menu">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="adminhtml" xsi:type="string">adminhtml</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- global: the provider passes no scope; read by the admin and REST token auth alike. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Acl">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Only the type changes. This module sequences after Magento_Elasticsearch so it wins. -->
+    <virtualType name="Magento\Elasticsearch\Model\Adapter\Index\Config\Reader"
+                 type="OOCS\LynxCompiler\Model\Config\Reader\EsConfig"/>
+
+    <!-- Injected by virtualType name: Config\Reader\Filesystem needs $fileName and two unpreferred interfaces. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\EsConfig">
+        <arguments>
+            <argument name="reader" xsi:type="object">Magento\Elasticsearch\Model\Adapter\Index\Config\Reader</argument>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--
+        ResourceConnection\Config reads the current scope; empty area files stop the search. Not primary: core
+        answers it empty.
+    -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Resources">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+                <item name="frontend" xsi:type="string">frontend</item>
+                <item name="adminhtml" xsi:type="string">adminhtml</item>
+                <item name="graphql" xsi:type="string">graphql</item>
+                <item name="webapi_rest" xsi:type="string">webapi_rest</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Only the type changes. This module sequences after Magento_QueryXml so it wins. -->
+    <virtualType name="Magento\QueryXml\Model\Config\Reader"
+                 type="OOCS\LynxCompiler\Model\Config\Reader\Query"/>
+
+    <!-- Same arrangement for the data exporter schema, after Magento_DataExporter. -->
+    <virtualType name="Magento\DataExporter\Config\Reader"
+                 type="OOCS\LynxCompiler\Model\Config\Reader\EtSchema"/>
+
+    <!--
+        All eight read one scope: their Config\Data holders pass none. Declared, not defaulted, to sit beside the
+        others.
+    -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Indexer">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\Mview">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--
+        Widget\Model\Config\Data reads ['global', 'design']; 'design' is the themes' widget.xml, and its empty
+        file stops the search.
+    -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Widget">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+                <item name="design" xsi:type="string">design</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\EmailTemplates">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\ZipCodes">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="OOCS\LynxCompiler\Console\Compiler\EavAttributes">
+        <arguments>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Injected by virtualType name: Config\Reader\Filesystem needs $fileName and two unpreferred interfaces. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\Query">
+        <arguments>
+            <argument name="reader" xsi:type="object">Magento\QueryXml\Model\Config\Reader</argument>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Injected by virtualType name: Config\Reader\Filesystem needs $fileName and two unpreferred interfaces. -->
+    <type name="OOCS\LynxCompiler\Console\Compiler\EtSchema">
+        <arguments>
+            <argument name="reader" xsi:type="object">Magento\DataExporter\Config\Reader</argument>
+            <argument name="scopes" xsi:type="array">
+                <item name="global" xsi:type="string">global</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

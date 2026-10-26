@@ -1,0 +1,23 @@
+<?php
+/**
+ * Copyright © OOCS Commerce (https://www.oocscommerce.com). All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+/** @var \OOCS\LynxCompiler\Block\Adminhtml\Cache\Compiled $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+?>
+<div class="additional-cache-management">
+    <form action="<?= $escaper->escapeUrl($block->getCleanUrl()) ?>" method="post" id="lynxFlushCompiledForm">
+        <?= $block->getBlockHtml('formkey') ?>
+        <p>
+            <button id="lynxFlushCompiled" type="submit">
+                <?= $escaper->escapeHtml(__('Flush Lynx Compile')) ?>
+            </button>
+            <span><?= $escaper->escapeHtml(
+                __('Everything lynx:compile built in generated/lynx_compile, served instead of rebuilt per request')
+            ) ?></span>
+        </p>
+    </form>
+</div>

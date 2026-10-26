@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © OOCS Commerce (https://www.oocscommerce.com). All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Layout\Merge already prefers the LynxOptimize merge on the frontend; this reads its files compiled. -->
+    <preference for="OOCS\LynxOptimize\Model\Layout\Merge" type="OOCS\LynxCompiler\Model\Layout\Merge"/>
+</config>
